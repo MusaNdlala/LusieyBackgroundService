@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "LusieyBackgroundService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
