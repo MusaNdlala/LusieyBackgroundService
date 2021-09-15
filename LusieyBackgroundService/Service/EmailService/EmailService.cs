@@ -13,16 +13,11 @@ namespace LusieyBackgroundService.Service.EmailService
 {
     public class EmailService : IEmailService
     {
-        //private readonly DbContextHelper _dbContext;
         private ApplicationDbContext _applicationDb;
         public EmailService(ApplicationDbContext applicationDb)
         {
             _applicationDb = applicationDb;
         }
-        /*public EmailService(DbContextHelper dbContext)
-        {
-            _dbContext = dbContext;
-        }*/
         private DbContextOptions<ApplicationDbContext> GetOptions()
         {
             var oprtionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -36,7 +31,7 @@ namespace LusieyBackgroundService.Service.EmailService
             try
             {
                 
-                result =  await (from Elist in (/*_dbContext.GetAllOptions()*/ _applicationDb.EmailList)
+                result =  await (from Elist in ( _applicationDb.EmailList)
                                 where Elist.EmailSent == false
                                 select Elist).ToListAsync();
                 return result;
@@ -49,13 +44,6 @@ namespace LusieyBackgroundService.Service.EmailService
             {
                 result = null;
             }
-            /*using(var _applicationDb = new ApplicationDbContext(GetOptions()))
-            {
-                var result = await (from Elist in (_applicationDb.EmailList)
-                                where Elist.EmailSent == false
-                                select Elist).ToListAsync();
-                return result;
-            }*/
         }
         public async Task<string> SetEmailsToSent(List<EmailList> emailLists) 
         {
@@ -63,7 +51,10 @@ namespace LusieyBackgroundService.Service.EmailService
             {
                 foreach (var email in emailLists.AsParallel().WithDegreeOfParallelism(2))
                 {
+                    var temp = email.EmailSent;
+
                     email.EmailSent = true;
+                    email.EmailSent = temp;
                 }
                 _applicationDb.UpdateRange(emailLists);
                 await _applicationDb.SaveChangesAsync();
@@ -73,16 +64,6 @@ namespace LusieyBackgroundService.Service.EmailService
             {
                 return e.Message;
             }
-            /*using (var _applicationDb = new ApplicationDbContext(GetOptions()))
-            {
-                foreach (var email in emailLists.AsParallel().WithDegreeOfParallelism(2))
-                {
-                    email.EmailSent = true;
-                }
-                _applicationDb.UpdateRange(emailLists);
-                await _applicationDb.SaveChangesAsync();
-                return "Complete";
-            }*/
         }
     }
 }

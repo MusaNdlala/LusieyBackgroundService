@@ -16,7 +16,7 @@ namespace LusieyBackgroundService
         public Worker(ILogger<Worker> logger, IEmailService emailService)
         {
             _logger = logger;
-            _emailService = emailService;//new EmailService();
+            _emailService = emailService;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -29,7 +29,7 @@ namespace LusieyBackgroundService
                 catch (Exception e){
                     _logger.LogError("Error: "+e.Message, DateTimeOffset.Now);
                 }
-                finally {await Task.Delay(1000, stoppingToken);}   
+                finally {await Task.Delay(10000, stoppingToken);}   
             }
         }
     }

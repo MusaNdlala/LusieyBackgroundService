@@ -24,7 +24,6 @@ namespace LusieyBackgroundService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-                    
                     var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
                         optionBuilder.UseMySql(hostContext.Configuration.GetConnectionString("DbConnection"));
 
