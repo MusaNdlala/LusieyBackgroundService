@@ -1,6 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using LusieyBackgroundService.DataConn;
+using LusieyBackgroundService.Interface;
+using LusieyBackgroundService.Service.EmailService;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -9,9 +12,11 @@ namespace LusieyBackgroundService
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        public Worker(ILogger<Worker> logger)
+        private readonly IEmailService _emailService;
+        public Worker(ILogger<Worker> logger, IEmailService emailService)
         {
             _logger = logger;
+            _emailService = emailService;//new EmailService();
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -19,11 +24,12 @@ namespace LusieyBackgroundService
             {
                 try {
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    _logger.LogInformation("Email service: " +await _emailService.SetEmailsToSent(await _emailService.GetNonSentEmails()), DateTimeOffset.Now);
                 }
                 catch (Exception e){
                     _logger.LogError("Error: "+e.Message, DateTimeOffset.Now);
                 }
-                finally {await Task.Delay(30000, stoppingToken);}   
+                finally {await Task.Delay(1000, stoppingToken);}   
             }
         }
     }

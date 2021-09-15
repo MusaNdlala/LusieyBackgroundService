@@ -1,5 +1,8 @@
 using LusieyBackgroundService.DataConn;
+using LusieyBackgroundService.Interface;
+using LusieyBackgroundService.Service.EmailService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -16,18 +19,17 @@ namespace LusieyBackgroundService
         {
             CreateHostBuilder(args).Build().Run();
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    //services.Configure<MyConfig>(hostContext.Configuration.GetSection("MyConfig"));
                     services.AddHostedService<Worker>();
-                    //services.AddTransient<MyConfig>(_ => _.GetRequiredService<IOptions<MyConfig>>().Value);
-                    //services
-                    services.AddDbContext<ApplicationDbContext>(options =>
-                            options.UseMySql(hostContext.Configuration.GetSection("DbConnection").Value));
-                           
+                    
+                    var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                        optionBuilder.UseMySql(hostContext.Configuration.GetConnectionString("DbConnection"));
+
+                    services.AddSingleton<ApplicationDbContext>(d=> new ApplicationDbContext(optionBuilder.Options));
+                    services.AddSingleton<IEmailService, EmailService>();
                 });
     }
 }
