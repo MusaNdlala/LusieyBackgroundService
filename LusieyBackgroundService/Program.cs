@@ -1,5 +1,8 @@
+using LusieyBackgroundService.DataConn;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +21,13 @@ namespace LusieyBackgroundService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    //services.Configure<MyConfig>(hostContext.Configuration.GetSection("MyConfig"));
                     services.AddHostedService<Worker>();
+                    //services.AddTransient<MyConfig>(_ => _.GetRequiredService<IOptions<MyConfig>>().Value);
+                    //services
+                    services.AddDbContext<ApplicationDbContext>(options =>
+                            options.UseMySql(hostContext.Configuration.GetSection("DbConnection").Value));
+                           
                 });
     }
 }
