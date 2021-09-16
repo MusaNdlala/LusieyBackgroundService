@@ -11,11 +11,6 @@ namespace LusieyBackgroundService.Service.EmailService
 {
     public class EmailTemplateService: IEmailTemplateService
     {
-        /*private IConfiguration _configuration;
-        public EmailTemplateService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }*/
         public  string SetEmailMessage(string Message/*string Template_Url, EmailMessage email*/)
         {
             try
