@@ -18,11 +18,6 @@ namespace LusieyBackgroundService
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            //var builder = new ConfigurationBuilder()
-                //.SetBasePath("path here") //<--You would need to set the path
-              //  .AddJsonFile("appsettings.json"); //or what ever file you have the settings
-
-            //IConfiguration configuration = builder.Build();
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -30,13 +25,7 @@ namespace LusieyBackgroundService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-                    //var optionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                    //optionBuilder.UseMySql(hostContext.Configuration.GetConnectionString("DbConnection"));
-                    //optionBuilder.UseMySql("server=localhost;database=Lusiey_DB;user=root;password=ggjktdINSTR951702;Convert Zero Datetime=True");
-
-                    //services.AddScoped<ApplicationDbContext>(d=> new ApplicationDbContext(optionBuilder.Options));
                     services.AddDbContext<ApplicationDbContext>(options =>
-                        //options.UseMySql("server=localhost;database=Lusiey_DB;user=root;password=ggjktdINSTR951702;Convert Zero Datetime=True")
                         options.UseMySql(hostContext.Configuration.GetConnectionString("DbConnection"))
                         , ServiceLifetime.Scoped);
                     services.AddScoped<IEmailService, EmailService>();

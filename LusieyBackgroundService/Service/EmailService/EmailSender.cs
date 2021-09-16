@@ -44,7 +44,6 @@ namespace LusieyBackgroundService.Service.EmailService
                 {
                     From = new MailAddress(sendEmail.SendingEmail),
                     Subject = sendEmail.subject,
-                    //Body = SetEmailMessage(mailMessage.Body),// sendEmail.body,
                     IsBodyHtml = true,
                 };
                 mailMessage.To.Add(sendEmail.RecievingEmail);
@@ -53,7 +52,6 @@ namespace LusieyBackgroundService.Service.EmailService
                 sendEmail.body = SetEmailMessage(sendEmail.body);
                 mailMessage = EmbedPictures(mailMessage, pathurl, sendEmail.body);
 
-                //mailMessage.Body = SetEmailMessage(mailMessage.Body); //*await*/ _EmailTemplateService.SetEmailMessage(mailMessage.Body);
                 if (mailMessage == null)
                     return false;
 
