@@ -29,20 +29,19 @@ namespace LusieyBackgroundService
                 {
                     _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                     using (var scope = _serviceProvider.CreateScope()) {
+
                         var temp = await scope.ServiceProvider.GetRequiredService<IEmailService>()
                             .SetEmailsToSent(await scope.ServiceProvider.GetRequiredService<IEmailService>()
                             .GetNonSentEmails());
                         _logger.LogInformation("Email service: " + temp, DateTimeOffset.Now);
-                        
+
                         var AudioService = await scope.ServiceProvider.GetRequiredService<IAudioService>()
                            .EmailAudios(await scope.ServiceProvider.GetRequiredService<IAudioService>()
                            .DeactivateAudios());
                         _logger.LogInformation("Email unPaid audio: " + AudioService, DateTimeOffset.Now);
                     }
                 }
-                catch (Exception e){
-                    _logger.LogError("Error: "+e.Message, DateTimeOffset.Now);
-                }
+                catch (Exception e){_logger.LogError("Error: "+e.Message, DateTimeOffset.Now);}
                 finally {await Task.Delay(30000, stoppingToken);}
             }
         }
