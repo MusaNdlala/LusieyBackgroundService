@@ -47,12 +47,11 @@ namespace LusieyBackgroundService.Service.EmailService
                 {
                     var temp = email.EmailSent;
                     Attached athd = new Attached(@"C:\files\temp.txt");
+                    var email2 = new Email(email.EmailAddress,email.EmailSubject,email.EmailMessage);
 
-                    if (await _emailSender.SendEmail(email, true, athd) == false)
+                    if (await _emailSender.SendEmail(email2,null, true, athd) == false)
                         return "Not Complete";
-                    
                     email.EmailSent = true;
-                    email.EmailSent = temp;
                 }
                 _applicationDb.UpdateRange(emailLists);
                 await _applicationDb.SaveChangesAsync();

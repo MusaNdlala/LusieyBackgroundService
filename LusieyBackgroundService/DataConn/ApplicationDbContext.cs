@@ -13,5 +13,7 @@ namespace LusieyBackgroundService.DataConn
         {
         }
         public DbSet<EmailList> EmailList {get;set;}
+        public DbSet<AudioBusket> AudioBuskets {get;set;}
+        public DbSet<AudioTextModel> AudioTextModel {get;set;}
     }
 }

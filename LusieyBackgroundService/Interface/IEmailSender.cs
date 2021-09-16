@@ -8,6 +8,6 @@ namespace LusieyBackgroundService.Interface
 {
     public interface IEmailSender
     {
-        public Task<bool> SendEmail(EmailList Email, bool sslOn_Of = true, Attached attached = null);
+        public Task<bool> SendEmail(Email Email, string TemplateType, bool sslOn_Of = true, Attached attached = null);
     }
 }

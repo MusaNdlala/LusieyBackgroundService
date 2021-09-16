@@ -39,7 +39,7 @@ namespace LusieyBackgroundService
                 catch (Exception e){
                     _logger.LogError("Error: "+e.Message, DateTimeOffset.Now);
                 }
-                finally {await Task.Delay(10000, stoppingToken);}   
+                finally {await Task.Delay(30000, stoppingToken);}
             }
         }
     }

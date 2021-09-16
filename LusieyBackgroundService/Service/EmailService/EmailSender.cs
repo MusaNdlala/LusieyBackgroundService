@@ -21,7 +21,7 @@ namespace LusieyBackgroundService.Service.EmailService
             _configuration = configuration;
             _EmailTemplateService = EmailTemplateService;
         }
-        public async Task<bool> SendEmail(EmailList Email, bool sslOn_Of = true , Attached attached = null)
+        public async Task<bool> SendEmail(Email Email, string TemplateType, bool sslOn_Of = true , Attached attached = null)
         {
             try {
                 var sendEmail = new EmailDetails();
@@ -29,10 +29,9 @@ namespace LusieyBackgroundService.Service.EmailService
                 sendEmail.password      = _configuration["EmailSettings:password"];
                 sendEmail.portParam     = Convert.ToInt32(_configuration["EmailSettings:Port"]);
                 sendEmail.smtpParam     = _configuration["EmailSettings:Smtp"];
-                sendEmail.RecievingEmail = Email.EmailAddress;
-                sendEmail.subject       = Email.EmailSubject;
-                sendEmail.body          = Email.EmailMessage;
-                
+                sendEmail.RecievingEmail = Email.RecievingEmail;
+                sendEmail.subject       = Email.subject;
+                sendEmail.body          = Email.body;
 
                 var smtpClient = new SmtpClient(sendEmail.smtpParam)
                 {
@@ -100,7 +99,7 @@ namespace LusieyBackgroundService.Service.EmailService
         {
             try
             {
-                string FilePath = @"C:\Users\Musa\source\repos\SendEmail\SendEmail\html\EmailTEmplate1\Template.html";//Template_Url; 
+                string FilePath = _configuration["LusieyEmailTample1"];//@"C:\\Users\Musa\\source\\repos\SendEmail\\SendEmail\\html\\EmailTEmplate1\\Template.html";//Template_Url; 
                 StreamReader str = new StreamReader(FilePath);
                 string MailText = str.ReadToEnd();
                 str.Close();
