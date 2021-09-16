@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Text;
 
 namespace LusieyBackgroundService.Models
@@ -26,13 +27,13 @@ namespace LusieyBackgroundService.Models
             get { return MediaTypeProp; }
             set
             {
-                var temp = this.getExtension(urlProp);
+                var temp = this.GetExtension(urlProp);
                 if (MediaType == null)
                     MediaTypeProp = "";
                 MediaTypeProp = temp;
             }
         }
-        private string getExtension(string file)
+        private string GetExtension(string file)
         {
             if (file.Contains(".") == false)
                 return null;

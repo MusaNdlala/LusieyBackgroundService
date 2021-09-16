@@ -13,25 +13,19 @@ namespace LusieyBackgroundService.Service.EmailService
 {
     public class EmailService : IEmailService
     {
-        private ApplicationDbContext _applicationDb;
-        public EmailService(ApplicationDbContext applicationDb)
+        private readonly ApplicationDbContext _applicationDb;
+        private readonly IEmailSender _emailSender;
+        public EmailService(ApplicationDbContext applicationDb, IEmailSender emailSender)
         {
-            _applicationDb = applicationDb;
+            _applicationDb  = applicationDb;
+            _emailSender    = emailSender;
         }
-        private DbContextOptions<ApplicationDbContext> GetOptions()
-        {
-            var oprtionBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            oprtionBuilder.UseMySql("");
-            return oprtionBuilder.Options;
-        }
-
         public async Task<List<EmailList>> GetNonSentEmails()
         {
             var result = new List<EmailList>();
             try
-            {
-                
-                result =  await (from Elist in ( _applicationDb.EmailList)
+            {   
+                result = await (from Elist in (_applicationDb.EmailList)
                                 where Elist.EmailSent == false
                                 select Elist).ToListAsync();
                 return result;
@@ -52,7 +46,11 @@ namespace LusieyBackgroundService.Service.EmailService
                 foreach (var email in emailLists.AsParallel().WithDegreeOfParallelism(2))
                 {
                     var temp = email.EmailSent;
+                    Attached athd = new Attached(@"C:\files\temp.txt");
 
+                    if (await _emailSender.SendEmail(email, true, athd) == false)
+                        return "Not Complete";
+                    
                     email.EmailSent = true;
                     email.EmailSent = temp;
                 }
