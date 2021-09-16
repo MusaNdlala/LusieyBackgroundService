@@ -33,7 +33,11 @@ namespace LusieyBackgroundService
                             .SetEmailsToSent(await scope.ServiceProvider.GetRequiredService<IEmailService>()
                             .GetNonSentEmails());
                         _logger.LogInformation("Email service: " + temp, DateTimeOffset.Now);
-                        //_logger.LogInformation("Email service: " + await _emailService.SetEmailsToSent(await _emailService.GetNonSentEmails()), DateTimeOffset.Now);
+                        
+                        var AudioService = await scope.ServiceProvider.GetRequiredService<IAudioService>()
+                           .EmailAudios(await scope.ServiceProvider.GetRequiredService<IAudioService>()
+                           .DeactivateAudios());
+                        _logger.LogInformation("Email unPaid audio: " + AudioService, DateTimeOffset.Now);
                     }
                 }
                 catch (Exception e){

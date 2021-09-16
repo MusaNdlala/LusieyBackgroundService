@@ -8,16 +8,18 @@ using LusieyBackgroundService.Models.Enums;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LusieyBackgroundService.Interface;
+using Microsoft.Extensions.Configuration;
 
 namespace LusieyBackgroundService.Service.Audios
 {
-    public class AudioService
+    public class AudioService : IAudioService
     {
         private readonly ApplicationDbContext _applicationDb;
+        private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
-
-        public AudioService(ApplicationDbContext applicationDb, IEmailSender emailSender)
+        public AudioService(ApplicationDbContext applicationDb, IEmailSender emailSender, IConfiguration configuration)
         {
+            _configuration  = configuration;
             _applicationDb  = applicationDb;
             _emailSender    = emailSender;
         }
@@ -46,14 +48,34 @@ namespace LusieyBackgroundService.Service.Audios
         }
         public async Task<int> EmailAudios(List<AudioTextModel> ToBeEmailed)
         {
-            if(ToBeEmailed.Count() ==0)
-                return 0;
+            try { 
+                if (ToBeEmailed.Count() == 0)
+                    return 0;
+                var MailMessage = new StringBuilder();
+                MailMessage.AppendLine("Good Day \n The Following are Audios That where not Paid for.");
 
-            foreach (var MaileMe in ToBeEmailed)
-            {
-                _emailSender.SendEmail(new Email(),null,true,null);
+                foreach (var MaileMe in ToBeEmailed)
+                {
+                    MailMessage.AppendLine("Id      : " + MaileMe.id.ToString());
+                    MailMessage.AppendLine("Name    : " + MaileMe.AudioName);
+                    MailMessage.AppendLine("Price   : " + MaileMe.priceCharged);
+                }
+
+                var email = new Email();
+                email.RecievingEmail    = _configuration["AdminEmail:Email"];
+                email.HeaderMessage     = _configuration["AdminEmail:Header"];
+                email.EmailHeader       = _configuration["AdminEmail:EmailHeader"];
+                email.subject           = _configuration["AdminEmail:Subject"];
+                email.Message           = MailMessage.ToString();
+
+                if (await _emailSender.SendEmail(email, null, true, null) == true) {
+                    return ToBeEmailed.Count();
+                }
+                return 0;
             }
-            return 0;
+            catch (Exception) {
+                return 0;
+            }
         }
     }
 }

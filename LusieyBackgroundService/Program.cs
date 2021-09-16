@@ -1,5 +1,6 @@
 using LusieyBackgroundService.DataConn;
 using LusieyBackgroundService.Interface;
+using LusieyBackgroundService.Service.Audios;
 using LusieyBackgroundService.Service.EmailService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace LusieyBackgroundService
                         , ServiceLifetime.Scoped);
                     services.AddScoped<IEmailService, EmailService>();
                     services.AddScoped<IEmailSender, EmailSender>();
+                    services.AddScoped<IAudioService, AudioService>();
                     services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
                 });
     }
