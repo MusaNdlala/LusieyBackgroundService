@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LusieyBackgroundService.Models
 {
-    public class EmailList
+    public sealed class EmailList : IDisposable
     {
         [Key]
         public int id { get; set; }
@@ -12,5 +12,10 @@ namespace LusieyBackgroundService.Models
         public string EmailMessage { get; set; }
         public Boolean EmailSent { get; set; } = false;
         public DateTime DeletionDate { get; set; } = DateTime.UtcNow.AddDays(1);
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

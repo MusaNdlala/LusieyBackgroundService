@@ -4,10 +4,15 @@ using System.Text;
 
 namespace LusieyBackgroundService.Models
 {
-    public class EmailMessage
+    public sealed class EmailMessage : IDisposable
     {
         public string EmailHeader { get; set; }
         public string MessageHeader { get; set; }
         public string Message { get; set; }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

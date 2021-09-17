@@ -2,12 +2,11 @@
 
 namespace LusieyBackgroundService.Models
 {
-    public class Email
+    public sealed class Email : IDisposable
     {
         private string RecievingEmailProp;
         private string subjectProp;
         private string bodyProp;
-
         private string EmailHeaderProp;
         private string HeaderMessageProp;
         private string MessageProp;
@@ -78,6 +77,10 @@ namespace LusieyBackgroundService.Models
                     throw new ArgumentException("Email Message can not be empty :", nameof(Message) + "=>" + value);
                 this.RecievingEmailProp = value;
             }
+        }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

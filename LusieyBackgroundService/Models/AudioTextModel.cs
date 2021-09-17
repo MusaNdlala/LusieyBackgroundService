@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LusieyBackgroundService.Models
 {
-    public class AudioTextModel
+    public sealed class AudioTextModel :IDisposable
     {
         [NotMapped]
         public string EncryptID { get; set; }
@@ -45,5 +45,10 @@ namespace LusieyBackgroundService.Models
         public AudioBusket AudioBusket { get; set; }
         public string AffiliatCode { get; set; }
         public decimal AffiliatePayment { get; set; }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

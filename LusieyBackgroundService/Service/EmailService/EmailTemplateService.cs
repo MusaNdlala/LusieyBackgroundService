@@ -1,16 +1,16 @@
-﻿using LusieyBackgroundService.Interface;
-using LusieyBackgroundService.Models;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+using LusieyBackgroundService.Interface;
 
 namespace LusieyBackgroundService.Service.EmailService
 {
-    public class EmailTemplateService: IEmailTemplateService
+    public sealed class EmailTemplateService: IEmailTemplateService, IDisposable
     {
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public  string SetEmailMessage(string Message/*string Template_Url, EmailMessage email*/)
         {
             try

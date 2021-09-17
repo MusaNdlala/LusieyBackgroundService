@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LusieyBackgroundService.Models
 {
-    public sealed class Attached
+    public sealed class Attached : IDisposable
     {
         private string urlProp;
         private string MediaTypeProp;
@@ -52,6 +52,12 @@ namespace LusieyBackgroundService.Models
                 return MediaTypeNames.Image.Tiff;
             return null;
         }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public Attached(string url)
         {
             this.url = url;

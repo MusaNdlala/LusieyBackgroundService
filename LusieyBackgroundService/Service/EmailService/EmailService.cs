@@ -11,18 +11,25 @@ using LusieyBackgroundService.Interface;
 
 namespace LusieyBackgroundService.Service.EmailService
 {
-    public class EmailService : IEmailService
+    public sealed class EmailService : IEmailService, IDisposable
     {
-        private readonly ApplicationDbContext _applicationDb;
         private readonly IEmailSender _emailSender;
-        public EmailService(ApplicationDbContext applicationDb, IEmailSender emailSender)
+        private readonly IDbConnectHelper _dbConnectHelper;
+        public EmailService(IEmailSender emailSender, IDbConnectHelper dbConnectHelper)
         {
-            _applicationDb  = applicationDb;
+            _dbConnectHelper = dbConnectHelper;
             _emailSender    = emailSender;
         }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public async Task<List<EmailList>> GetNonSentEmails()
         {
             var result = new List<EmailList>();
+            var _applicationDb = new ApplicationDbContext(await _dbConnectHelper.LusieydbContextOptions());
             try
             {   
                 result = await (from Elist in (_applicationDb.EmailList)
@@ -37,10 +44,12 @@ namespace LusieyBackgroundService.Service.EmailService
             finally
             {
                 result = null;
+                _applicationDb.Dispose();
             }
         }
         public async Task<string> SetEmailsToSent(List<EmailList> emailLists) 
         {
+            var _applicationDb = new ApplicationDbContext(await _dbConnectHelper.LusieydbContextOptions());
             try
             {
                 foreach (var email in emailLists.AsParallel().WithDegreeOfParallelism(2))
@@ -60,6 +69,10 @@ namespace LusieyBackgroundService.Service.EmailService
             catch (Exception e)
             {
                 return e.Message;
+            }
+            finally
+            {   
+                _applicationDb.Dispose();
             }
         }
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LusieyBackgroundService.Models
 {
-    public class EmailDetails
+    public sealed class EmailDetails : IDisposable
     {
         private string SendingEmailProp;
         private string passwordProp;
@@ -13,7 +13,7 @@ namespace LusieyBackgroundService.Models
         private string RecievingEmailProp;
         private string subjectProp;
         private string bodyProp;
-        public string SendingEmail
+        public string SendingEmail 
         {
             get { return SendingEmailProp; }
             set
@@ -96,6 +96,11 @@ namespace LusieyBackgroundService.Models
             RecievingEmail = recievingEmail;
             this.subject = subject;
             this.body = body;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

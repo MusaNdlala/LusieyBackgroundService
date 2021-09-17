@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LusieyBackgroundService.DataConn
 {
-    public class ApplicationDbContext : DbContext
+    public sealed class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                : base(options)

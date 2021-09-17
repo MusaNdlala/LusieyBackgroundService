@@ -12,20 +12,22 @@ using Microsoft.Extensions.Configuration;
 
 namespace LusieyBackgroundService.Service.Audios
 {
-    public class AudioService : IAudioService
+    public sealed class AudioService : IAudioService, IDisposable
     {
-        private readonly ApplicationDbContext _applicationDb;
+        private readonly IDbConnectHelper _dbConnectHelper;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
-        public AudioService(ApplicationDbContext applicationDb, IEmailSender emailSender, IConfiguration configuration)
+        public AudioService(IDbConnectHelper dbConnectHelper, IEmailSender emailSender, IConfiguration configuration)
         {
+            _dbConnectHelper = dbConnectHelper;
             _configuration  = configuration;
-            _applicationDb  = applicationDb;
             _emailSender    = emailSender;
         }
         public async Task<List<AudioTextModel>> DeactivateAudios()
         {
-            try{
+            var _applicationDb = new ApplicationDbContext(await _dbConnectHelper.LusieydbContextOptions());
+            try
+            {
                 var tempList = await (from temp in _applicationDb.AudioTextModel
                                     where   temp.Active == Active.Active 
                                             && temp.Payment == Payment.unpaid
@@ -45,15 +47,23 @@ namespace LusieyBackgroundService.Service.Audios
                 return returnresult;
             }
             catch (Exception) {return new List<AudioTextModel>();}
+            finally { await _applicationDb.DisposeAsync();}
         }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
         public async Task<int> EmailAudios(List<AudioTextModel> ToBeEmailed)
         {
-            try { 
-                if (ToBeEmailed.Count() == 0)
-                    return 0;
-                var MailMessage = new StringBuilder();
+            if (ToBeEmailed.Count() == 0)
+                return 0;
+            var MailMessage = new StringBuilder();
+            var email = new Email();
+            try {
+                
                 MailMessage.AppendLine("Good Day \n The Following are Audios That where not Paid for.");
-
                 foreach (var MaileMe in ToBeEmailed)
                 {
                     MailMessage.AppendLine("Id      : " + MaileMe.id.ToString());
@@ -61,7 +71,6 @@ namespace LusieyBackgroundService.Service.Audios
                     MailMessage.AppendLine("Price   : " + MaileMe.priceCharged);
                 }
 
-                var email = new Email();
                 email.RecievingEmail    = _configuration["AdminEmail:Email"];
                 email.HeaderMessage     = _configuration["AdminEmail:Header"];
                 email.EmailHeader       = _configuration["AdminEmail:EmailHeader"];
@@ -75,6 +84,10 @@ namespace LusieyBackgroundService.Service.Audios
             }
             catch (Exception) {
                 return 0;
+            }
+            finally { 
+                MailMessage = null;
+                email.Dispose();
             }
         }
     }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LusieyBackgroundService.Models
 {
-    public class AudioBusket
+    public sealed class AudioBusket : IDisposable
     {
         [NotMapped]
         public string EncryptID { get; set; }
@@ -21,5 +21,10 @@ namespace LusieyBackgroundService.Models
         public IEnumerable<AudioTextModel> AudioTextModelList { get; set; } = new List<AudioTextModel>();
         public DateTime deletiontime { get; set; }
         public DateTime ArchiveDate { get; set; }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

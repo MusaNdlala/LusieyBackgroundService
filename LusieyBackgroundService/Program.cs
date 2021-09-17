@@ -2,6 +2,7 @@ using LusieyBackgroundService.DataConn;
 using LusieyBackgroundService.Interface;
 using LusieyBackgroundService.Service.Audios;
 using LusieyBackgroundService.Service.EmailService;
+using LusieyBackgroundService.Service.Tester;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,17 +19,19 @@ namespace LusieyBackgroundService
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
                     services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseMySql(hostContext.Configuration.GetConnectionString("DbConnection"))
                         , ServiceLifetime.Scoped);
-                    services.AddScoped<IEmailService, EmailService>();
-                    services.AddScoped<IEmailSender, EmailSender>();
-                    services.AddScoped<IAudioService, AudioService>();
+
+                    services.AddSingleton<IEmailService, EmailService>();
+                    services.AddSingleton<IEmailSender, EmailSender>();
+                    services.AddSingleton<IAudioService, AudioService>();
+                    services.AddSingleton<IDbConnectHelper, DbConnectHelper>();
                     services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
+                    services.AddSingleton<ITester, Tester>();
                 });
     }
 }

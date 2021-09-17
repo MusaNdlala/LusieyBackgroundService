@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using LusieyBackgroundService.DataConn;
-using LusieyBackgroundService.Models;
+using LusieyBackgroundService.Interface;
 
 namespace LusieyBackgroundService.Service.AudioBusket
 {
-    public class AudioBustket
+    public sealed class AudioBustket : IDisposable
     {
-        private readonly ApplicationDbContext _applicationDb;
-        public AudioBustket(ApplicationDbContext applicationDb)
+        private readonly IDbConnectHelper _dbConnectHelper;
+        public AudioBustket(IDbConnectHelper dbConnectHelper)
         {
-            _applicationDb = applicationDb;
+            _dbConnectHelper = dbConnectHelper;
         }
-        public List<AudioBustket> DeactivateAudioBusket()
+        public async Task<List<AudioBustket>> DeactivateAudioBusket()
         {
-            return null;
+            using (var _applicationDb = new ApplicationDbContext(await _dbConnectHelper.LusieydbContextOptions())) 
+            {
+                return null;
+            }
         }
+        public void Dispose(){GC.SuppressFinalize(this);}
     }
 }
