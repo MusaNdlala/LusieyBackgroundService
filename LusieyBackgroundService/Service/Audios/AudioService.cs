@@ -102,7 +102,7 @@ namespace LusieyBackgroundService.Service.Audios
                 email.subject           = _configuration["AdminEmail:Subject"];
                 email.Message           = MailMessage.ToString();
 
-                if (await _emailSender.SendEmail(email, null, true, null) == true) {
+                if (await _emailSender.SendEmail(email, null, true, null) == true)  {
                     return ToBeEmailed.Count();
                 }
                 return 0;

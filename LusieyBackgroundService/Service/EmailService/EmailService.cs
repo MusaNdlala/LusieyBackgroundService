@@ -56,10 +56,14 @@ namespace LusieyBackgroundService.Service.EmailService
                 foreach (var email in emailLists.AsParallel().WithDegreeOfParallelism(2))
                 {
                     var temp = email.EmailSent;
-                    Attached athd = new Attached(@"C:\files\temp.txt");
+                    //Attached athd = new Attached(@"C:\files\temp.txt");
+                    //Attached athd = new Attached("");
                     var email2 = new Email(email.EmailAddress,email.EmailSubject,email.EmailMessage);
 
-                    if (await _emailSender.SendEmail(email2,null, true, athd) == false)
+                    /*if (await _emailSender.SendEmail(email2,null, true, athd) == false)
+                        return "Not Complete";*/
+
+                    if (await _emailSender.SendEmail(email2, null, true) == false)
                         return "Not Complete";
                     email.EmailSent = true;
                 }

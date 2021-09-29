@@ -65,7 +65,7 @@ namespace LusieyBackgroundService.Service.EmailService
 
                 sendEmail.body = SetEmailMessage(sendEmail.body);
 
-                var pathurl = @_configuration["TemplateUrl"];//@"C:\Users\Musa\source\repos\LusieyBackgroundService\LusieyBackgroundService\HtmlTemplate\EmailTEmplate1\images\email.png";
+                var pathurl = _configuration["TemplateUrl"];//@"C:\Users\Musa\source\repos\LusieyBackgroundService\LusieyBackgroundService\HtmlTemplate\EmailTEmplate1\images\email.png";
 
                 var TempMailMessage = EmbedPictures(mailMessage, pathurl, sendEmail.body);
                 if (TempMailMessage != null) {
@@ -111,8 +111,9 @@ namespace LusieyBackgroundService.Service.EmailService
                 temp.AlternateViews.Add(alternativeView);
                 return temp;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                var error =e.Message;
                 return null;
             }
             finally { 
