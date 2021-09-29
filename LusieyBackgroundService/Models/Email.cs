@@ -55,7 +55,7 @@ namespace LusieyBackgroundService.Models
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Email Header can not be empty :", nameof(EmailHeader) + "=>" + value);
-                this.RecievingEmailProp = value;
+                this.EmailHeaderProp = value;
             }
         }
         public string HeaderMessage
@@ -65,7 +65,7 @@ namespace LusieyBackgroundService.Models
             {
                 if (string.IsNullOrEmpty(value) && string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Email Message Header can not be empty :", nameof(HeaderMessage) + "=>" + value);
-                this.RecievingEmailProp = value;
+                this.HeaderMessageProp = value;
             }
         }
         public string Message
