@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LusieyBackgroundService.Interface;
+using LusieyBackgroundService.DataConn.DbInterface;
 
 namespace LusieyBackgroundService.Service.EmailService
 {

@@ -1,4 +1,5 @@
 ﻿using LusieyBackgroundService.DataConn;
+using LusieyBackgroundService.DataConn.DbInterface;
 using LusieyBackgroundService.Interface;
 using LusieyBackgroundService.Models;
 using Microsoft.EntityFrameworkCore;

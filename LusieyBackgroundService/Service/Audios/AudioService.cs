@@ -15,10 +15,10 @@ namespace LusieyBackgroundService.Service.Audios
 {
     public sealed class AudioService : IAudioService, IDisposable
     {
-        private readonly IDbConnectHelper _dbConnectHelper;
+        private readonly DataConn.DbInterface.IDbConnectHelper _dbConnectHelper;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
-        public AudioService(IDbConnectHelper dbConnectHelper, IEmailSender emailSender, IConfiguration configuration)
+        public AudioService(DataConn.DbInterface.IDbConnectHelper dbConnectHelper, IEmailSender emailSender, IConfiguration configuration)
         {
             _dbConnectHelper = dbConnectHelper;
             _configuration  = configuration;
@@ -81,7 +81,9 @@ namespace LusieyBackgroundService.Service.Audios
 
         public async Task<int> EmailAudios(List<AudioTextModel> ToBeEmailed)
         {
-            try { 
+
+            try {
+                var email = new Email();
                 if (ToBeEmailed.Count() == 0)
                     return 0;
                 var MailMessage = new StringBuilder();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LusieyBackgroundService.DataConn;
-using LusieyBackgroundService.Interface;
+using LusieyBackgroundService.DataConn.DbInterface;
 
 namespace LusieyBackgroundService.Service.AudioBusket
 {

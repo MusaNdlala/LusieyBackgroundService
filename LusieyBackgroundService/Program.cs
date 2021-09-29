@@ -30,7 +30,7 @@ namespace LusieyBackgroundService
                     services.AddSingleton<IEmailService, EmailService>();
                     services.AddSingleton<IEmailSender, EmailSender>();
                     services.AddSingleton<IAudioService, AudioService>();
-                    services.AddSingleton<IDbConnectHelper, DbConnectHelper>();
+                    services.AddSingleton<DataConn.DbInterface.IDbConnectHelper, DbConnectHelper>();
                     services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
                     services.AddSingleton<ITester, Tester>();
                 });

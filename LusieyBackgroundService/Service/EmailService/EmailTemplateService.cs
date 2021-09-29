@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LusieyBackgroundService.Interface;
+using Microsoft.Extensions.Configuration;
 
 namespace LusieyBackgroundService.Service.EmailService
 {

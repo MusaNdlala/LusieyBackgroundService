@@ -131,7 +131,7 @@ namespace LusieyBackgroundService.Service.EmailService
                 alternateView.LinkedResources.Add(res);
                 return alternateView;
             }
-            catch (Exception e){
+            catch (Exception){
                 return null;
             }
         }

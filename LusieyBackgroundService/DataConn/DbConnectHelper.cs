@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LusieyBackgroundService.DataConn
 {
-    public sealed class DbConnectHelper : IDbConnectHelper, IDisposable
+    public sealed class DbConnectHelper : DbInterface.IDbConnectHelper, IDisposable
     {
         private readonly IConfiguration _configuration;
         private DbContextOptionsBuilder<ApplicationDbContext> _options;
@@ -25,16 +25,6 @@ namespace LusieyBackgroundService.DataConn
 
         public async Task<DbContextOptions<ApplicationDbContext>> LusieydbContextOptions()
         {
-            /*try{
-                return _options.UseMySql(_configuration.GetConnectionString("DbConnection")).Options;
-            }
-            catch (Exception){
-                return new DbContextOptions<ApplicationDbContext>();
-            }*/
-            /*using (_options = new DbContextOptionsBuilder<ApplicationDbContext>())
-            {
-                return _options.UseMySql(_configuration.GetConnectionString("DbConnection")).Options;
-            }*/
             _options = new DbContextOptionsBuilder<ApplicationDbContext>();
 
             try { return _options.UseMySql(_configuration.GetConnectionString("DbConnection")).Options;}
