@@ -62,5 +62,10 @@ namespace LusieyBackgroundService.Models
         {
             this.url = url;
         }
+
+        internal void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
