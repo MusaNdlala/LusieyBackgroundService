@@ -39,7 +39,7 @@ namespace LusieyBackgroundService.Service.EmailService
                 result = null;
             }
         }
-        public async Task<string> SetEmailsToSent(List<EmailList> emailLists) 
+        public async Task<string> SetEmailsToSent(List<EmailList> emailLists)
         {
             try
             {
