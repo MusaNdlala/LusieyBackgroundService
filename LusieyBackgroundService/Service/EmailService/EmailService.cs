@@ -47,7 +47,7 @@ namespace LusieyBackgroundService.Service.EmailService
                 _applicationDb.Dispose();
             }
         }
-        public async Task<string> SetEmailsToSent(List<EmailList> emailLists) 
+        public async Task<string> SetEmailsToSent(List<EmailList> emailLists)
         {
             var _applicationDb = new ApplicationDbContext(await _dbConnectHelper.LusieydbContextOptions());
             try

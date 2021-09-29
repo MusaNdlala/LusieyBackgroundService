@@ -4,18 +4,21 @@ using LusieyBackgroundService.Interface;
 
 namespace LusieyBackgroundService.Service.EmailService
 {
-    public sealed class EmailTemplateService: IEmailTemplateService, IDisposable
+    public class EmailTemplateService: IEmailTemplateService
     {
-        public void Dispose()
+        private readonly IConfiguration _configuration;
+
+        public EmailTemplateService(IConfiguration configuration)
         {
-            GC.SuppressFinalize(this);
+            _configuration = configuration;
         }
 
         public  string SetEmailMessage(string Message/*string Template_Url, EmailMessage email*/)
         {
             try
             {
-                string FilePath = @"C:\Users\Musa\source\repos\SendEmail\SendEmail\html\EmailTEmplate1\Template.html";//Template_Url; 
+                //string FilePath = @"C:\Users\Musa\source\repos\SendEmail\SendEmail\html\EmailTEmplate1\Template.html";//Template_Url; 
+                string FilePath = @_configuration["LusieyEmailTample1"];//@"C:\Users\Musa\source\repos\SendEmail\SendEmail\html\EmailTEmplate1\Template.html";//Template_Url; 
                 StreamReader str = new StreamReader(FilePath);
                 string MailText = str.ReadToEnd();
                 str.Close();

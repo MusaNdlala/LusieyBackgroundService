@@ -57,13 +57,12 @@ namespace LusieyBackgroundService.Service.Audios
 
         public async Task<int> EmailAudios(List<AudioTextModel> ToBeEmailed)
         {
-            if (ToBeEmailed.Count() == 0)
-                return 0;
-            var MailMessage = new StringBuilder();
-            var email = new Email();
-            try {
-                
+            try { 
+                if (ToBeEmailed.Count() == 0)
+                    return 0;
+                var MailMessage = new StringBuilder();
                 MailMessage.AppendLine("Good Day \n The Following are Audios That where not Paid for.");
+
                 foreach (var MaileMe in ToBeEmailed)
                 {
                     MailMessage.AppendLine("Id      : " + MaileMe.id.ToString());
@@ -84,10 +83,6 @@ namespace LusieyBackgroundService.Service.Audios
             }
             catch (Exception) {
                 return 0;
-            }
-            finally { 
-                MailMessage = null;
-                email.Dispose();
             }
         }
     }

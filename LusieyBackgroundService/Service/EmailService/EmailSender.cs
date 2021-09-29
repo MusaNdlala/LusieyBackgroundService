@@ -87,13 +87,16 @@ namespace LusieyBackgroundService.Service.EmailService
 
                     var attachment = new Attachment(attached.url, attached.MediaType);
                     mailMessage.Attachments.Add(attachment);
+
+
                     smtpClient.Send(mailMessage);
                     return true;
                 }
                 smtpClient.Send(mailMessage);
                 return true;
             }
-            catch (Exception) { return false; }
+            catch (Exception) 
+            {   return false; }
             finally{
                 sendEmail.Dispose();
                 attached.Dispose();
@@ -102,7 +105,7 @@ namespace LusieyBackgroundService.Service.EmailService
         }
         private MailMessage EmbedPictures(MailMessage temp, string imageUrl, string htmlBody)
         {
-            if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(htmlBody) || temp != null)
+            if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(htmlBody) || temp == null)
                 return null;
             
             var picturez = new Attached(imageUrl);
@@ -118,28 +121,23 @@ namespace LusieyBackgroundService.Service.EmailService
                 return null;
             }
             finally { 
-                temp.Dispose();
-                picturez.Dispose();
+                //temp.Dispose();
+                //picturez.Dispose();
             }
         }
         private AlternateView GetEmbeddedImage(String filePath, string EmailBody)
         {
             LinkedResource res = new LinkedResource(filePath);
-            AlternateView alternateView = AlternateView.CreateAlternateViewFromString("");
-            
+            //AlternateView alternateView = AlternateView.CreateAlternateViewFromString("");
             try{
                 res.ContentId = Guid.NewGuid().ToString();
                 string htmlBody = EmailBody.Replace("[LogoImage]", "cid:" + res.ContentId);
-                alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
+                AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody, null, MediaTypeNames.Text.Html);
                 alternateView.LinkedResources.Add(res);
                 return alternateView;
             }
             catch (Exception e){
                 return null;
-            }
-            finally{
-                res.Dispose();
-                alternateView.Dispose();
             }
         }
         private string SetEmailMessage(string Message)
