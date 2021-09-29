@@ -15,10 +15,10 @@ namespace LusieyBackgroundService.Service.Audios
 {
     public sealed class AudioService : IAudioService, IDisposable
     {
-        private readonly DataConn.DbInterface.IDbConnectHelper _dbConnectHelper;
+        private readonly IDbConnectHelper _dbConnectHelper;
         private readonly IConfiguration _configuration;
         private readonly IEmailSender _emailSender;
-        public AudioService(DataConn.DbInterface.IDbConnectHelper dbConnectHelper, IEmailSender emailSender, IConfiguration configuration)
+        public AudioService(IDbConnectHelper dbConnectHelper, IEmailSender emailSender, IConfiguration configuration)
         {
             _dbConnectHelper = dbConnectHelper;
             _configuration  = configuration;
