@@ -1,4 +1,5 @@
 using LusieyBackgroundService.DataConn;
+using LusieyBackgroundService.DataConn.DbInterface;
 using LusieyBackgroundService.Interface;
 using LusieyBackgroundService.Service.Audios;
 using LusieyBackgroundService.Service.EmailService;
@@ -28,6 +29,7 @@ namespace LusieyBackgroundService
                     services.AddScoped<IEmailService, EmailService>();
                     services.AddScoped<IEmailSender, EmailSender>();
                     services.AddScoped<IAudioService, AudioService>();
+                    services.AddSingleton<IDbConnectHelper, DbConnectHelper>();
                     services.AddSingleton<IEmailTemplateService, EmailTemplateService>();
                 });
     }

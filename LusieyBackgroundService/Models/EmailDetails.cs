@@ -97,5 +97,10 @@ namespace LusieyBackgroundService.Models
             this.subject = subject;
             this.body = body;
         }
+
+        internal void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,19 +12,13 @@ using System.Threading.Tasks;
 
 namespace LusieyBackgroundService.Service.EmailService
 {
-    public sealed class EmailSender : IEmailSender, IDisposable
+    public sealed class EmailSender : IEmailSender
     {
         private readonly IConfiguration _configuration;
-        //private readonly IEmailTemplateService _EmailTemplateService;
-        public EmailSender(IConfiguration configuration/*, IEmailTemplateService EmailTemplateService*/)
+        
+        public EmailSender(IConfiguration configuration)
         {
             _configuration = configuration;
-            //_EmailTemplateService = EmailTemplateService;
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
         private Dictionary<string, object> setUpMailMessage(EmailDetails sendEmail, Email Email, bool sslOn_Of)
         {
@@ -46,6 +40,7 @@ namespace LusieyBackgroundService.Service.EmailService
             {
                 From = new MailAddress(sendEmail.SendingEmail),
                 Subject = sendEmail.subject,
+                Body = sendEmail.body,
                 IsBodyHtml = true,
             };
             mailMessage.To.Add(sendEmail.RecievingEmail);
@@ -70,7 +65,7 @@ namespace LusieyBackgroundService.Service.EmailService
 
                 sendEmail.body = SetEmailMessage(sendEmail.body);
 
-                var pathurl = @"C:\Users\Musa\source\repos\SendEmail\SendEmail\html\EmailTEmplate1\images\email.png";
+                var pathurl = @_configuration["TemplateUrl"];//@"C:\Users\Musa\source\repos\LusieyBackgroundService\LusieyBackgroundService\HtmlTemplate\EmailTEmplate1\images\email.png";
 
                 var TempMailMessage = EmbedPictures(mailMessage, pathurl, sendEmail.body);
                 if (TempMailMessage != null) {
@@ -98,9 +93,9 @@ namespace LusieyBackgroundService.Service.EmailService
             catch (Exception) 
             {   return false; }
             finally{
-                sendEmail.Dispose();
-                attached.Dispose();
-                Email.Dispose();
+                //sendEmail.Dispose();
+                //attached.Dispose();
+                //Email.Dispose();
             }
         }
         private MailMessage EmbedPictures(MailMessage temp, string imageUrl, string htmlBody)
@@ -150,8 +145,8 @@ namespace LusieyBackgroundService.Service.EmailService
                 str.Close();
 
                 string MyHeader = "Lusiey"; //"M-Ndlala";
-                string MessageHeader = "Welcome to the message";
-                string MyMessage = "Hi this is the message";
+                string MessageHeader = _configuration["MessageHeader"];//"Welcome to the message";
+                string MyMessage = Message;
 
                 MailText = MailText.Replace("[MyHeader]", MyHeader);
                 MailText = MailText.Replace("[MessageHeader]", MessageHeader);

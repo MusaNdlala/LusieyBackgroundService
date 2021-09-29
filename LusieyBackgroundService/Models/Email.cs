@@ -79,5 +79,10 @@ namespace LusieyBackgroundService.Models
                 this.RecievingEmailProp = value;
             }
         }
+
+        internal void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
